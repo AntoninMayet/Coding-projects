@@ -1,7 +1,7 @@
 # Coding projects
 
 __This place is where I'll developpe my projects of any kind__
-I make any thing that can seems interesting whatever this word means. My goal is to take the documentation of something, understand it and make something with. I dont want to look at YouTube video who explains the code and the logic. I want to write it myself.
+I make anything that can seem interesting whatever this word means. My goal is to take the documentation of something, understand it and make something with it. I don't want to look at YouTube video that explains the code and the logic. I want to write it myself.
 
 ## QRcode generator
 
@@ -27,4 +27,4 @@ ___
 
 ## ASCII converter
 
-I want to write a code that take an standar image and convert every pixel in a ASCII caracter (' .:-=+*#%@') in order to make it cooler.
+I want to write a code that takes a standard image and converts every pixel into an ASCII character (' .:-=+*#%@') to make it cooler.
