@@ -8,6 +8,7 @@ I make anything that can seem interesting whatever this word means. My goal is t
 I think the title is self-explanatory
 
 ### QRcode V1
+
 This is the proof of concept : the discovery of the lib. I create a basic input/print thing to simply interact with the lib and that's it
 
 ### QRcode generator v2
