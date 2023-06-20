@@ -1,12 +1,3 @@
-'''
-Afin de transformer une image nulle en truc cool avec des caractères ASCII, il faudrait :
-- Récupérer l'image
-- La convertir en B&W
-- Récupérer la valeur de chaque pixel
-- Faire une map pour que le plus sombre est un ' ' et le plus lumineux un '@'
-- Ouvrir l'image
-'''
-
 #DONE Get the image
 #TODO Get the dimension of the image
 #TODO Convert it in B&W
