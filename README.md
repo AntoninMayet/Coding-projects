@@ -29,3 +29,11 @@ ___
 ## ASCII converter
 
 I want to write a code that takes a standard image and converts every pixel into an ASCII character (' .:-=+*#%@') to make it cooler.
+
+### ASCII V1
+
+This program finaly works. If you give it the good path to your desire image, it will return a .txt. However, it works better with low resolution picture.
+
+### ASCII V2
+
+I would like the program to create a web page in order to have a monospace kind of font. A GUI would also be a plus.

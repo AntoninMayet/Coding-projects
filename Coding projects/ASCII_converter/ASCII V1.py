@@ -8,7 +8,7 @@ start_time = time.time()
 
 density = ' .:-=+*#%@'
 
-font_name = r'C:\Users\anton\.vscode\Coding_projects\ASCII_converter\CourierPrime-Regular.ttf'
+font_name = r'C:\Users\anton\.vscode\Coding_projects\Coding projects\ASCII_converter\Fonts\CourierPrime-Regular.ttf'
 font_size = 12
 spacing = 1
 font = ImageFont.truetype(font_name, font_size)
@@ -23,10 +23,6 @@ bw_image = image.convert('L')
 
 image_width, image_height = image.size
 
-result_image = Image.new('L', (image_width, image_height))
-draw = ImageDraw.Draw(result_image)
-draw.fontmode = '1'
-
 with open(text_file_path, 'w') as text_file:
     for y in range(image_height):
         for x in range(image_width):
@@ -38,11 +34,7 @@ with open(text_file_path, 'w') as text_file:
 
             text_file.write(ASCII)
 
-            draw.text((x * (font_size + spacing), y * font_size), ASCII, fill='white', font=font)
-
         text_file.write('\n')
-
-result_image.save('output_image.jpg')
 
 end_time = time.time()
 time_spend = end_time - start_time
