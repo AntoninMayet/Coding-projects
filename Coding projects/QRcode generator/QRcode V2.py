@@ -56,7 +56,6 @@ def generate_qrcode():
 tk_main_window = tk.Tk()
 tk_main_window.configure(background=tk_dominant_color)
 tk_main_window.title('QRcode generator')
-tk_main_window.geometry('400x500')
 
 tk_main_window.columnconfigure((0, 1), weight=1)
 
