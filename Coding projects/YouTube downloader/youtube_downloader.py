@@ -1,2 +1,5 @@
-import youtube_downloader
-from youtube_downloader import video
+from pytube import YouTube
+
+video = input("Paste the link to the video you want to download :\n")
+
+print(video)
