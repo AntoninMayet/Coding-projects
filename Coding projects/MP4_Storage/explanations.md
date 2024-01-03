@@ -5,7 +5,7 @@
 - Encode data from x on y's canvas
     - Use a 4k grid 
         - 3840 by 2160 = 8,294,400 pixels
-        - theoretically 1Go of x = 121 frame so just over than 2s! 🤯
+        - theoretically 1Go of x = 962 frames so just under than 17s! 🤯
     - B&W from 0 to 255 to map binary values? (better idea?)
     - Store y video @60fps
     - Hope size reduction from x to y
