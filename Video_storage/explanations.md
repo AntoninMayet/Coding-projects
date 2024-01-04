@@ -1,3 +1,7 @@
+# Definitions:
+
+- Vidéo de stockage: vidéo daans laquelle les données sont encodées
+
 # Roadmap
 
 - Take the video (x) to convert
@@ -14,6 +18,14 @@
     - Read pixel by pixel decode values
     - Assemble obtained values to recreate x
     - Play x
+
+- Encode & decode should be two functions 
+
+## Comment faire la vidéo de stockage
+
+- Générer des images de la bonne résolution
+- Modifier pix par pix la couleur de chaque pix
+- Faire un time-lapse des images générée
 
 # Versions
 
