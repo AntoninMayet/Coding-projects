@@ -1,4 +1,5 @@
-import codecs, csv, os
+import cv2, codecs, csv, os, moviepy
+from PIL import Image
 
 # <Variables>
 latitude = 3840
@@ -8,7 +9,7 @@ path_to_input_file = r'/home/antonin/code/Coding-projects/Video_storage/chien.jp
 path_to_binary_file = r'/home/antonin/code/Coding-projects/Video_storage/binary_file.txt'
 path_to_encode_csv = r'/home/antonin/code/Coding-projects/Video_storage/encode.csv'
 
-input_file_root, input_file_extension = os.plath.splitext(path_to_input_file)
+input_file_root, input_file_extension = os.path.splitext(path_to_input_file)
 # </Variables>
 
 # <Work_preparer>
@@ -44,5 +45,13 @@ def colour_definer(read_binary_code):
         if i['read_binary_code']==str(read_binary_code):
             return [i['R'],i['G'],i['B']]
 # </Functions_zone>
+
+# <Testing_things_zone>
+image_for_data = Image.new('RGB', (latitude, longitude), color='white')
+image_for_data.save('base_for_data.jpg')
+
+img = cv2.imread(path_to_input_file)
+assert img is not None, "file could not be read, check with os.path.exists()"
+# </Testing_things_zone>
 
 convert_file_to_binary(path_to_input_file, path_to_binary_file)
