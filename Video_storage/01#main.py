@@ -1,21 +1,24 @@
-import cv2, codecs
+import cv2, codecs, csv, os
 from PIL import Image
 
 latitude = 3840
 longitude = 2160
 
-path_to_input_file = r'/home/antonin/code/Coding-projects/Video_storage/chien.jpg'#input("Path to your image: ")
-path_to_binary_file = r'/home/antonin/code/Coding-projects/Video_storage/bin_file.txt'
-'''
-image_for_data = Image.new('RGB', (latitude, longitude), color='white')
-image_for_data.save('base_for_data.jpg')
+path_to_input_file = r'/home/antonin/code/Coding-projects/Video_storage/chien.jpg' #input("Path to your image: ")
+path_to_binary_file = r'/home/antonin/code/Coding-projects/Video_storage/binary_file.txt'
+path_to_encode_csv = r'/home/antonin/code/Coding-projects/Video_storage/encode.csv'
 
-img = cv2.imread(path_to_file)
-assert img is not None, "file could not be read, check with os.path.exists()"
+fichier=codecs.open(path_to_encode_csv,'r','utf-8')
+encode=list(csv.DictReader(fichier,delimiter=','))
+fichier.close()
 
-px = img[1,1]
-print(px)
-'''
+def colour_definer(read_binary_code):
+    for i in encode:
+        i['read_binary_code']=str(i['MSB'])+str(i['3'])+str(i['2'])+str(i['LSB'])
+    for i in encode:
+        if i['read_binary_code']==str(read_binary_code):
+            return [i['R'],i['G'],i['B']]
+
 def convert_file_to_binary(path_to_input_file, path_to_binary_file):
     try:
         with open(path_to_input_file, 'rb') as file:
@@ -31,12 +34,8 @@ def convert_file_to_binary(path_to_input_file, path_to_binary_file):
     except FileNotFoundError:
         print(f"File '{path_to_input_file}' not found.")
         return None
-    except Exception as e:
-        print(f"An error occurred: {e}")
+    except Exception as E:
+        print(f"An error occurred: {E}")
         return None
 
-binary_data = convert_file_to_binary(path_to_input_file, path_to_binary_file)
-
-if binary_data:
-    print(f"Binary representation of '{path_to_input_file}':")
-    print(binary_data)
+convert_file_to_binary(path_to_input_file, path_to_binary_file)
