@@ -1,6 +1,14 @@
 # Definitions:
 
-- Vidéo de stockage: vidéo daans laquelle les données sont encodées
+## Variables:
+ 
+- image_for_data : image blanche qui sera modifiée par le programme pour y stocker des données
+- path_to_file: chemin vers le fichier que l'utilisateur veut encoder en vidéo
+- longitude: longeur de l'image, permet de facilement modifer la résolution des images
+- latitude: largeur de l'image, même justification que pour longitude
+
+---
+---
 
 # Roadmap
 
