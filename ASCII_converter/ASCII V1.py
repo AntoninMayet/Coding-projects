@@ -2,7 +2,7 @@ from PIL import Image, ImageFont, ImageDraw
 import os
 import time
 
-file_path = input('Give the path to your desired image : ')
+file_path = input('Give the path to your desired image: ')
 
 start_time = time.time()
 

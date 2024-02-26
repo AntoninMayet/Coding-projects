@@ -46,11 +46,11 @@ def colour_definer(extracted_octet_from_input_file):
         if i['extracted_octet_from_input_file']==str(extracted_octet_from_input_file):
             return [i['R'],i['G'],i['B']]
 
-def file_reader(path_to_input_file, asked): #Est-ce que l'on peut faire tourner deux fonction en même temps, trouver un moyen de sauvegarder l'état d'avancement du le lecture pour ne pas donner deux fois le même octet
-    with open('binary_file.txt', 'r', encoding='utf-8') as binary_file:
+def file_reader(path_to_input_file, asked): 
+    with open('binary_file.txt', 'rw', encoding='utf-8') as binary_file:
         while asked == True:
             read_octet = binary_file.read(4)
-
+            binary_file.replace(4)
             if not read_octet:
                 print("Reached end of input file")
                 asked = False
@@ -69,5 +69,5 @@ assert img is not None, "file could not be read, it might not exist"
 
 # <Heart_of_the_programm>
 convert_file_to_binary(path_to_input_file, path_to_binary_file)
-colour_definer(extracted_octet_from_input_file)
+#colour_definer(extracted_octet_from_input_file)
 # </Heart_of_the_programm>
