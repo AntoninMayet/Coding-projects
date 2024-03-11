@@ -8,7 +8,7 @@ List of errors:
 - Error 1: the motor was disable but the programm want it to move 
 */
 
-// called it a day on line 176
+// question to ask @ line 109
 
 #include <Wire.h> //I don't know what's its use but need to be here 😅
 #include <LiquidCrystal_I2C.h>
@@ -17,25 +17,22 @@ List of errors:
 #define rightButton 2
 #define downButton 3
 #define leftButton 4
-
+#define ENA=5 //these three lines might cause issues
+#define DIR=6
+#define PUL=7
 #define homeButton 8
 
-const int numberCarLCD = 16;
+const int numberCarLCD = 16; //is to change if the LCD display is changed
 const int calcultatedNumberOfRotation; //Need to calculate how much rotation are needed to
-//go from the home position to the other end. We'll then compare the calculatedNb and compare it
-//to the reel one
-int numberOfRotations = 0;
+//go from the home position to the other end. We'll then compare the calculatedNb and compare it to the reel one
 
+int savedNumberOfRotations = 0;//is used to save the number of rotation the motor has done
 
 float dlais = 250; //is used to control the speed of the motor
 int steps = 1600; //is used to know how many steps are in a full rotation of the rotor
 
-char ans;
-char stateOfTheMotor = 'D'; // will always be E or D (enable/disable)
-
-int PUL=7; //those three lines are used to tell how to communicate with the driver
-int DIR=6; //when the code will work, change this to #define and move it to the #define block
-int ENA=5;
+bool isTheMotorEnable = false; // will always be E or D (enable/disable)
+bool answerYesOrNo;
 
 LiquidCrystal_I2C lcd(0x27, 20, 4); //set the LCD adress for a 16/2
 
@@ -106,7 +103,17 @@ void setup()
   lcd.clear();
 }
 
-void turnClockwise(int nbTurn)
+string waitForButtonPresse(str defaultButton, str lookButton, int millisBeforeDefault)//lookButton = button that we want the user to press
+//take the names of the buttons and the time before... and return the one who is press
+{
+  for (int i=0; i<millisBeforeDefault; i++)
+  {
+    break;//temporary
+    //needs to break when a button is pressed and return the according string
+  }
+}
+
+void turnClockwise(int nbTurn)// takes the number of rotations wanted. Does it need to take the dlais at wich it turns?
 {
   for (int i=0; i<nbTurn*steps; i++)
   {
@@ -116,11 +123,11 @@ void turnClockwise(int nbTurn)
     delayMicroseconds(dlais);
     digitalWrite(PUL,LOW);
     delayMicroseconds(dlais);
-    numberOfRotations ++;
+    savedNumberOfRotations ++;
   }
 }
 
-void turnCounterClockwise(int nbTurn)
+void turnCounterClockwise(int nbTurn)//same as turnClockwise()
 {
   for (int i=0; i<(nbTurn*steps); i++)
   {
@@ -130,88 +137,115 @@ void turnCounterClockwise(int nbTurn)
     delayMicroseconds(dlais);
     digitalWrite(PUL,LOW);
     delayMicroseconds(dlais);
-    numberOfRotations --;
+    savedNumberOfRotations --;
   } 
 }
 
-void clearLCDLine(int lineToErase)
+void clearLCDLine(int lineToErase)//takes the index of the line it needs to erase and erase it
 {
-
   lcd.setCursor(lineToErase, 0);
-
   for(int n = 0; n < numberCarLCD; n++)
   {
     lcd.print(" ");
   }
 }
 
-Char askYesOrNoQuestion(char phrase) //returns 'y' or 'n'
+bool askYesOrNo(string phrase) //takes the the question ask and returns 1 for "yes" and 0 for "no"
 {
   lcd.clear();
   lcd.setCursor(0,0);
-  lcd.print(phrase)
+  lcd.print(phrase);
   lcd.setCursor(0, 1);
   lcd.print((byte)4);//This is just a test, I'm not sure it will work
   lcd.setCursor(2, 1);
   lcd.print("Yes");
   lcd.setCursor(16, 1);
-  lcd.print((byte),2);
+  //lcd.print((byte),2);//this line is problematic
   lcd.setCursor(12, 1);
   lcd.print("No");
 
+  millis(2500);
+
   if (leftButton == HIGH)
   {
-    char ans = y;
+    answerYesOrNo = true;
+    clearLCDLine(1);
+    lcd.setCursor(0,1);
+    lcd.print("You have selected yes");
   }
   else if (rightButton == HIGH)
   {
-    char ans = n;
+    answerYesOrNo = false;
+    clearLCDLine(1);
+    lcd.setCursor(0,1);
+    lcd.print("You have selected no");
   }
   return ans;
 }
 
 void homingSequence()
 {
-  if askYesOrNo("You have entered the homing sequence") == 'y'
+  askYesOrNo("You have entered the homing sequence");
+  if ( answerYesOrNo == true )
   {
-    lcd.print("The motor will be disable while you presse the ""up"" button");
+    lcd.clear();
+    lcd.setCursor(0,0);
+    lcd.print("The motor will be disabled in 2.5s, take it and move it to the bottom right hand corner");
+    lcd.setCursor(0,1);
+    lcd.print("Hold the motor");
+    millis(2500);
     motorToggler("disable");
+    clearLCDLine(1);
+    lcd.print("Slowly move the motor to the bottom right hand corner");
+    while(digitalRead(homeButton) == HIGH) //le problème c'est que cette line n'est exécuter qu'une seule fois
+    {
+      motorToggler("enable");
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("The motor is in the home position, let it go")
+      lcd.setCursor(0,1);
+      millis(500);
+      lcd.print("Let go of the motor");
+      millis(2500);
+      lcd.clear();
+      lcd.setCursor(0,0);
+      lcd.print("Exiting homing sequence");
+      millis(500);
+      lcd.clear();
+    }
+  }
+  else if ( answerYesOrNo == false )
+  {
+    lcd.clear();
+    lcd.print("You have decided to aborted the homing sequence");
+    lcd.setCursor(0,1);
+    lcd.print("Aborting home seqence");
+    millis(500);
+    lcd.clear();
   }
 }
 
-String motorChecker() //returns "can move" or "Error 1"
+void motorToggler(String state) //takes "disbale" or "enable", changes the state of the motor and changes isTheMotorEnable to 'D' or 'E'
 {
-  if stateOfTheMotor == 'E'
-  {
-    return "can move";
-  }
-  else if stateOfTheMotor == 'D'
-  {
-    return "Error 1";
-  }
-}
-
-void motorToggler(string state) //takes "disbale" or "enable"
-{
-  if state == "disable"
+  if (state == "disable")
   {
     digitalWrite(PUL, LOW);
     digitalWrite(DIR, LOW);
     digitalWrite(ENA, LOW);
-    stateOfTheMotor == 'D';
+    isTheMotorEnable = false;
   }
-  else if state == "enable"
+  else if (state == "enable")
   {
     digitalWrite(PUL, HIGH);
     digitalWrite(DIR, HIGH);
     digitalWrite(ENA, HIGH);
-    stateOfTheMotor == 'E'; 
+    isTheMotorEnable = true; 
   }
 }
 
 void loop()
 {
-  //need to make a function that catch errors
+  //need to make a function that catchs errors
 
   turnClockwise(1); //those 4 lines are just to test two functions
   delay(1000);
